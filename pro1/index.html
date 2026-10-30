@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f4f6f8;
+    }
+    form {
+      width: 320px;
+      padding: 24px;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    label, input, button { display: block; width: 100%; box-sizing: border-box; }
+    label { margin-bottom: 6px; }
+    input { padding: 10px; margin-bottom: 16px; }
+    button { padding: 10px; border: 0; border-radius: 4px; background: #2563eb; color: white; cursor: pointer; }
+    #welcome { margin-top: 16px; text-align: center; color: #166534; }
+  </style>
+</head>
+<body>
+  <form id="loginForm">
+    <label for="username">Username</label>
+    <input id="username" name="username" autocomplete="username" required>
+    <button type="submit">Enter</button>
+    <h2 id="welcome" aria-live="polite"></h2>
+  </form>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const welcome = document.getElementById("welcome");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const username = document.getElementById("username").value.trim();
+
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username })
+      });
+
+      const data = await response.json();
+      welcome.textContent = data.message;
+    });
+  </script>
+</body>
+</html>
